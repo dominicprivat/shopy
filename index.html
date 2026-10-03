@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Shoppy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+:root{color-scheme:light;--red:#e2001a;--ink:#1a1a1a;--line:#dcdcdc;--mute:#6f6f6f;box-sizing:border-box;padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:#fff;color:var(--ink);font:17px/1.3 "Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:520px;margin:0 auto}
+.hdr{position:sticky;top:0;z-index:5;background:var(--red);color:#fff;padding:calc(12px + env(safe-area-inset-top,0px)) 16px 14px}
+.hdr .in{max-width:520px;margin:0 auto}
+h1{font:italic 900 32px/1.05 "Arial Black","Helvetica Neue",Arial,sans-serif;letter-spacing:-1.5px;margin:0}
+.nav{display:flex;justify-content:space-between;margin-bottom:8px}
+.nav button{background:none;border:0;color:#fff;font:inherit;font-weight:700;padding:4px 0;cursor:pointer}
+.prog{height:5px;background:rgba(255,255,255,.35);margin-top:12px}
+.prog i{display:block;height:100%;width:0;background:#fff;transition:width .25s}
+h2{font-size:16px;font-weight:800;margin:22px 16px 10px;padding-left:10px;border-left:5px solid var(--red)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.shop{position:relative;background:#fff;border:0;border-radius:0;height:96px;padding:14px;text-align:left;font:inherit;color:var(--ink);cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end}
+.shop:active{background:#f1f1f1}
+.shop .n{font:italic 900 22px/1.1 "Arial Black","Helvetica Neue",Arial,sans-serif;letter-spacing:-.8px}
+.shop .c{font-size:14px;color:var(--mute);margin-top:2px}
+.shop.fav{background:var(--red);color:#fff}
+.shop.fav .c{color:#fff;opacity:.85}
+.star{position:absolute;top:0;right:0;width:46px;height:46px;font-size:22px;display:grid;place-items:center;color:#b5b5b5}
+.fav .star{color:#fff}
+.meta{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;color:var(--mute);font-size:14px;border-bottom:1px solid var(--line)}
+.meta button{background:none;border:0;color:var(--red);font:inherit;font-weight:700;cursor:pointer;padding:0 0 0 14px}
+ul{list-style:none;margin:0;padding:0}
+li{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--line)}
+.chk{width:28px;height:28px;border:2px solid var(--ink);border-radius:0;background:#fff;flex:none;cursor:pointer;color:#fff;font-size:17px;font-weight:900;line-height:1;padding:0}
+li.done .chk{background:var(--red);border-color:var(--red)}
+.sym{font-size:26px;width:32px;text-align:center;flex:none}
+.name{flex:1;word-break:break-word;font-weight:700;font-size:18px}
+li.done .name{text-decoration:line-through;color:#a0a0a0;font-weight:400}
+li.done .sym{opacity:.35}
+.qty{display:flex;align-items:center;border:1px solid var(--line);flex:none}
+.qty button{width:32px;height:32px;border:0;background:none;font-size:20px;color:var(--ink);cursor:pointer;padding:0}
+.qty span{min-width:20px;text-align:center;font-weight:800;font-size:15px}
+.empty{text-align:center;color:var(--mute);padding:44px 16px}
+.dock{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:3px solid var(--red);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
+.dock>div{max-width:520px;margin:0 auto}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--ink);background:#fff;color:var(--ink);font:inherit;font-size:14px;font-weight:600;padding:6px 10px;border-radius:0;cursor:pointer}
+.chip:active{background:#eee}
+.add{display:flex;gap:8px}
+.add input{flex:1;min-width:0;font:inherit;font-size:17px;padding:12px 14px;border:2px solid var(--ink);border-radius:0;background:#fff;color:var(--ink)}
+.add input:focus{outline:none;border-color:var(--red)}
+.add button{border:0;background:var(--red);color:#fff;width:52px;border-radius:0;font-size:28px;font-weight:700;cursor:pointer;padding:0}
+.hide{display:none}
+#splash{position:fixed;inset:0;z-index:100;background:var(--red);color:#fff;display:flex;flex-direction:column;justify-content:center;padding:24px 28px calc(24px + env(safe-area-inset-bottom,0px));transition:opacity .35s}
+#splash.off{opacity:0;pointer-events:none}
+#splash .w{max-width:420px;width:100%;margin:0 auto}
+#splash h1{font-size:46px;margin-bottom:28px}
+#splash .tr{height:6px;background:rgba(255,255,255,.35)}
+#splash .tr i{display:block;height:100%;width:0;background:#fff}
+#splash .pc{font-weight:800;font-size:14px;margin-top:8px}
+#splash .tip{margin-top:40px;border-top:2px solid #fff;padding-top:14px;min-height:84px;font-size:18px;font-weight:600}
+#splash .tip b{display:block;font-size:14px;margin-bottom:4px;opacity:.85}
+#splash .skip{margin-top:10px;font-size:13px;opacity:.75}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes slidein{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:translateX(-26px);background:#ffe3e6}to{opacity:1;transform:none;background:#fff}}
+@keyframes flash{from{background:#ffe3e6}to{background:#fff}}
+@keyframes tick{0%{transform:scale(.6)}60%{transform:scale(1.3)}100%{transform:scale(1)}}
+@keyframes bump{50%{transform:scale(1.6);color:var(--red)}}
+@keyframes starpop{0%{transform:scale(.4) rotate(-50deg)}60%{transform:scale(1.5) rotate(12deg)}100%{transform:none}}
+@keyframes stripes{to{background-position:22px 0}}
+@keyframes pulsebar{0%,100%{opacity:1}50%{opacity:.35}}
+.anim .shop{animation:rise .42s both}
+.anim .shop:nth-child(1){animation-delay:0.03s}.anim .shop:nth-child(2){animation-delay:0.06s}.anim .shop:nth-child(3){animation-delay:0.09s}.anim .shop:nth-child(4){animation-delay:0.12s}.anim .shop:nth-child(5){animation-delay:0.15s}.anim .shop:nth-child(6){animation-delay:0.18s}.anim .shop:nth-child(7){animation-delay:0.21s}.anim .shop:nth-child(8){animation-delay:0.24s}.anim .shop:nth-child(9){animation-delay:0.27s}.anim .shop:nth-child(10){animation-delay:0.30s}
+#list.slide{animation:slidein .3s ease-out}
+li.pop{animation:pop .4s cubic-bezier(.2,1.3,.4,1)}
+li.tick{animation:flash .6s}
+li.tick .chk{animation:tick .38s cubic-bezier(.2,1.6,.4,1)}
+li{transition:opacity .2s,transform .2s}
+li.out{opacity:0;transform:translateX(44px)}
+.qty span.bump{animation:bump .28s}
+.star.spin{animation:starpop .45s}
+.prog.full i{animation:pulsebar .7s 2}
+.nav button:active,.add button:active,.chip:active,.meta button:active,.qty button:active{transform:scale(.9)}
+.chk:active{transform:scale(.85)}
+.shop{transition:background .15s}
+#splash h1{animation:rise .6s both}
+#splash .tr i{background:repeating-linear-gradient(45deg,#fff 0 8px,#ffd0d5 8px 16px);background-size:22px 100%;animation:stripes .5s linear infinite}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="splash"><div class="w"><h1>Shoppy</h1><div class="tr"><i id="sb"></i></div><div class="pc" id="sp">0 %</div><div class="tip" id="st"></div><div class="skip">Tippen zum Überspringen</div></div></div>
+<section id="home">
+  <div class="hdr"><div class="in"><h1>Shoppy</h1></div></div>
+  <div class="wrap"><div id="favs"></div><div id="rest"></div><div style="height:40px"></div></div>
+</section>
+<section id="list" class="hide">
+  <div class="hdr"><div class="in">
+    <div class="nav"><button id="back">‹ Märkte</button><button id="share">Teilen</button></div>
+    <h1 id="title"></h1>
+    <div class="prog"><i id="bar"></i></div>
+  </div></div>
+  <div class="wrap" style="padding-bottom:140px">
+    <div class="meta"><span id="stat"></span><span><button id="uncheck">Alle zurücksetzen</button><button id="clear">Erledigte löschen</button></span></div>
+    <ul id="items"></ul>
+  </div>
+</section>
+<div class="dock hide" id="dock"><div>
+  <div class="chips" id="chips"></div>
+  <div class="add"><input id="inp" placeholder="Produkt hinzufügen" autocomplete="off" enterkeyhint="done"><button id="addbtn" aria-label="Hinzufügen">+</button></div>
+</div></div>
+<script>
+const SHOPS=["Penny","Aldi","Lidl","dm","Tedi","Woolworth","Rewe","Edeka","Kaufland","Action"];
+const COL=["#c8553d","#3d6fb6","#2f7d4f","#8a5fb0","#d98a1f","#2a8a8a","#b0436e","#5a6b78","#7a8f2a","#a0522d"];
+const ICONS=[
+["🥛","milch hafermilch sojamilch sahne buttermilch kakao"],["🧈","butter margarine"],["🧀","käse gouda parmesan mozzarella feta"],["🥚","ei eier"],
+["🍞","brot toast brötchen semmel baguette"],["🥐","croissant gebäck"],["🍎","apfel äpfel"],["🍌","banane"],["🍊","orange mandarine clementine"],["🍋","zitrone limette"],
+["🍇","trauben"],["🍓","erdbeere beeren himbeere"],["🍉","melone"],["🍐","birne"],["🍑","pfirsich nektarine"],["🥝","kiwi"],["🍍","ananas"],["🥭","mango"],
+["🥕","karotte möhre"],["🥔","kartoffel"],["🍅","tomate"],["🥒","gurke"],["🥦","brokkoli"],["🥬","salat spinat kohl"],["🌽","mais"],["🧅","zwiebel"],["🧄","knoblauch"],["🫑","paprika"],["🍄","pilz champignon"],["🥑","avocado"],["🍆","aubergine"],
+["🥩","fleisch steak hack rind schwein"],["🍗","hähnchen huhn pute"],["🥓","speck bacon"],["🌭","wurst würstchen salami schinken"],["🐟","fisch lachs thunfisch"],["🍤","garnelen"],
+["🍝","nudeln spaghetti pasta"],["🍚","reis"],["🍕","pizza"],["🍟","pommes"],["🥫","dose tomatensauce konserve"],["🍯","honig marmelade"],["🥜","nuss nüsse erdnuss"],["🍫","schokolade"],["🍪","keks kekse"],["🍬","bonbon gummibär süßigkeit"],["🍦","eis"],["🍰","kuchen torte"],["🥣","müsli cornflakes haferflocken"],["🧂","salz gewürz pfeffer"],["🌶️","chili"],["🫒","oliven öl"],
+["☕","kaffee"],["🍵","tee"],["🧃","saft"],["💧","wasser sprudel"],["🥤","cola limo fanta sprite"],["🍺","bier"],["🍷","wein sekt"],
+["🧻","toilettenpapier klopapier küchenrolle taschentücher"],["🧼","seife duschgel"],["🧴","shampoo creme lotion spülung sonnencreme"],["🪥","zahnbürste zahnpasta"],["🧽","schwamm spülmittel"],["🧺","waschmittel weichspüler"],["🗑️","müllbeutel müllsack"],["🪒","rasierer rasierklingen"],["💊","tabletten medikament vitamin"],["🩹","pflaster"],["🧷","windel"],["🕯️","kerze"],["🔋","batterie batterien"],["💡","glühbirne lampe"],["🐶","hundefutter hund"],["🐱","katzenfutter katze"],["🎂","geburtstag"],["🎁","geschenk"],["🧦","socken"],["✏️","stift stifte block heft"],["🌱","blumen pflanze"],["🎄","deko weihnachten"],["🍼","babynahrung"]
+];
+const CAT=[...new Set(ICONS.flatMap(([e,k])=>k.split(" ").filter(x=>x.length>2).map(x=>x[0].toUpperCase()+x.slice(1))))].sort();
+function icon(n){const w=n.toLowerCase().replace(/[^a-zäöüß ]/g,"").trim().split(/\s+/);let best=null,bs=0;
+ for(const[e,k]of ICONS)for(const key of k.split(" ")){if(!key)continue;
+  for(const x of w){let s=0;if(x===key)s=3;else if(x.length>=3&&key.length>=3&&x.includes(key))s=2;else if(key.length>=4&&x.length>=4&&key.includes(x))s=1;if(s>bs){bs=s;best=e}}}
+ return best||"🛒"}
+const load=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}};
+const put=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let S=load("einkauf",{}),F=load("favoriten",[]),H=load("verlauf",[]),cur=null,fx={x:-1,t:""},lastStar="";
+const $=id=>document.getElementById(id);
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const sv=()=>put("einkauf",S);
+function tile(n){const o=(S[n]||[]).filter(x=>!x.d).length,f=F.includes(n);
+ return `<button class="shop${f?" fav":""}" data-s="${n}"><span class="n">${n}</span><span class="c">${o?o+" offen":"leer"}</span><span class="star${lastStar===n?" spin":""}" data-f="${n}" role="button" aria-label="Favorit">${f?"★":"☆"}</span></button>`}
+function home(a){cur=null;$("list").classList.add("hide");$("dock").classList.add("hide");$("home").classList.remove("hide");
+ const fav=F.filter(n=>SHOPS.includes(n)),rest=SHOPS.filter(n=>!F.includes(n));
+ $("favs").innerHTML=fav.length?`<h2>Favoriten</h2><div class="grid">${fav.map(tile).join("")}</div>`:"";
+ $("rest").innerHTML=`<h2>${fav.length?"Alle Märkte":"Märkte (Stern = Favorit)"}</h2><div class="grid">${rest.map(tile).join("")}</div>`;
+ lastStar="";$("home").classList.toggle("anim",!!a);scrollTo(0,0)}
+function open(n){cur=n;$("home").classList.add("hide");$("list").classList.remove("hide");$("list").classList.remove("slide");void $("list").offsetWidth;$("list").classList.add("slide");$("dock").classList.remove("hide");$("title").textContent=n;render();chips();scrollTo(0,0)}
+function render(){const l=S[cur]||[],d=l.filter(i=>i.d).length;
+ const idx=l.map((i,x)=>[i,x]),sorted=[...idx.filter(a=>!a[0].d),...idx.filter(a=>a[0].d)];
+ $("items").innerHTML=l.length?sorted.map(([i,x])=>`<li class="${i.d?"done":""}${x===fx.x&&fx.t&&fx.t!=="bump"?" "+fx.t:""}"><button class="chk" data-t="${x}" aria-label="abhaken">${i.d?"✓":""}</button><span class="sym">${i.e}</span><span class="name">${esc(i.n)}</span><span class="qty"><button data-m="${x}" aria-label="weniger">−</button><span class="${x===fx.x&&fx.t==="bump"?"bump":""}">${i.q||1}</span><button data-p="${x}" aria-label="mehr">+</button></span></li>`).join(""):`<div class="empty">Noch nichts auf der Liste.<br>Schreib unten ein Produkt hinein.</div>`;
+ $("bar").style.width=l.length?d/l.length*100+"%":"0";
+ $("stat").textContent=l.length?`${d} von ${l.length} erledigt`:"";
+ $("uncheck").classList.toggle("hide",!d);$("clear").classList.toggle("hide",!d);
+ const all=l.length&&d===l.length;if(all)$("stat").textContent="Alles erledigt ✓";$("bar").parentNode.classList.toggle("full",!!all);fx={x:-1,t:""}}
+function chips(){const v=$("inp").value.trim().toLowerCase(),have=(S[cur]||[]).map(i=>i.n.toLowerCase());
+ let s=v?CAT.filter(x=>x.toLowerCase().startsWith(v)&&x.toLowerCase()!==v).slice(0,8):H.filter(x=>!have.includes(x.toLowerCase())).slice(0,10);
+ $("chips").innerHTML=s.map(x=>`<button class="chip" data-c="${esc(x)}">${icon(x)} ${esc(x)}</button>`).join("");$("chips").classList.toggle("hide",!s.length)}
+function add(t){const v=(t||$("inp").value).trim();if(!v)return;const l=S[cur]=S[cur]||[];
+ const ex=l.find(i=>i.n.toLowerCase()===v.toLowerCase());if(ex){ex.q=(ex.q||1)+1;ex.d=false;fx={x:l.indexOf(ex),t:"bump"}}else{l.unshift({n:v,e:icon(v),d:false,q:1});fx={x:0,t:"pop"}}
+ H=[v,...H.filter(x=>x.toLowerCase()!==v.toLowerCase())].slice(0,30);put("verlauf",H);
+ $("inp").value="";sv();render();chips()}
+$("home").onclick=e=>{const f=e.target.closest("[data-f]");
+ if(f){const n=f.dataset.f;F=F.includes(n)?F.filter(x=>x!==n):[...F,n];put("favoriten",F);lastStar=n;home();return}
+ const b=e.target.closest("[data-s]");if(b)open(b.dataset.s)};
+$("back").onclick=()=>home(true);
+$("addbtn").onclick=()=>add();
+$("inp").oninput=chips;
+$("inp").onkeydown=e=>{if(e.key==="Enter")add()};
+$("chips").onclick=e=>{const c=e.target.closest("[data-c]");if(c)add(c.dataset.c)};
+$("items").onclick=e=>{const l=S[cur],g=a=>e.target.closest("["+a+"]");
+ const t=g("data-t"),m=g("data-m"),p=g("data-p");
+ if(t){const i=l[t.dataset.t];i.d=!i.d;fx={x:+t.dataset.t,t:i.d?"tick":""}}
+ else if(p){const i=l[p.dataset.p];i.q=(i.q||1)+1;fx={x:+p.dataset.p,t:"bump"}}
+ else if(m){const i=l[m.dataset.m],ix=+m.dataset.m;if((i.q||1)>1){i.q--;fx={x:ix,t:"bump"}}else{m.closest("li").classList.add("out");setTimeout(()=>{l.splice(ix,1);sv();render();chips()},200);return}}
+ else return;sv();render();chips()};
+$("clear").onclick=()=>{S[cur]=S[cur].filter(i=>!i.d);sv();render()};
+$("uncheck").onclick=()=>{S[cur].forEach(i=>i.d=false);sv();render()};
+$("share").onclick=async()=>{const it=(S[cur]||[]).filter(i=>!i.d).map(i=>"- "+(i.q>1?i.q+"x ":"")+i.n).join("\n");
+ const t="Einkaufsliste "+cur+"\n"+(it||"(alles erledigt)")+"\n\nErstellt mit Shoppy 🛒\nHol dir Shoppy als Webapp aufs iPhone: Link in Safari öffnen, auf Teilen tippen und „Zum Home-Bildschirm“ wählen.";
+ const u=/^https?:/.test(location.href)?location.href:"";
+ try{if(navigator.share)await navigator.share(u?{text:t,url:u}:{text:t});else{await navigator.clipboard.writeText(t+(u?"\n"+u:""));$("share").textContent="Kopiert";setTimeout(()=>$("share").textContent="Teilen",1500)}}catch(e){}};
+const TIPS=["Tippe auf den Stern, dann steht dein Lieblingsmarkt immer ganz oben.","Unter dem Eingabefeld findest du Vorschläge. Ein Tipp, und das Produkt ist drauf.","Beim Produkt auf − tippen: bei Menge 1 wird es gelöscht.","Mit „Teilen“ schickst du die offenen Produkte per Nachricht weiter.","„Alle zurücksetzen“ ist ideal für den Wocheneinkauf, der sich wiederholt.","Das passende Symbol zum Produkt wird automatisch gewählt."];
+(function(){const s=document.getElementById("splash"),b=document.getElementById("sb"),p=document.getElementById("sp"),t=document.getElementById("st");
+let n=0,k=Math.floor(Math.random()*TIPS.length),done=false;
+const tip=()=>{t.innerHTML="<b>Tipp</b>"+TIPS[k%TIPS.length];k++;t.style.animation="none";void t.offsetWidth;t.style.animation="rise .45s both"};tip();
+const ti=setInterval(tip,1500);
+const end=()=>{if(done)return;done=true;clearInterval(iv);clearInterval(ti);s.classList.add("off");if(cur===null)home(true);setTimeout(()=>s.remove(),400)};
+const iv=setInterval(()=>{n+=0.8+Math.random()*1.4;if(n>=100){n=100;b.style.width="100%";p.textContent="100 %";setTimeout(end,250);clearInterval(iv);return}b.style.width=n+"%";p.textContent=Math.floor(n)+" %"},75);
+s.onclick=end})();
+home();
+</script>
+</body>
+</html>
